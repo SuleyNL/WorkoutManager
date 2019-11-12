@@ -1206,7 +1206,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param desc
      */
     public void setDescription(String desc) {
-        this.mDescription = desc;
+        //this.mDescription = desc;
     }
 
     /**
