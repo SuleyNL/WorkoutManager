@@ -3,6 +3,7 @@ package com.example.workoutmanager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Intent progressActivity = new Intent(this, ProgressActivity.class);
+
 
         progressButton = findViewById(R.id.progressButton);
         progressButton.setOnClickListener(new View.OnClickListener() {
@@ -27,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 progressButton.startAnimation(AnimationUtils.loadAnimation(context, R.anim.animatie));
-                System.out.println("progress");            }
+                System.out.println("progress");
+                startActivity(progressActivity);
+            }
         });
         goalButton = findViewById(R.id.goalButton);
         goalButton.setOnClickListener(new View.OnClickListener() {
