@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Workout Manager</string>
+    <string name="title_activity_workout">activity_workout</string>
 </resources>
