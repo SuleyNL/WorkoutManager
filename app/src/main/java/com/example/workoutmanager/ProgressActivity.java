@@ -33,8 +33,6 @@ public class ProgressActivity extends AppCompatActivity {
         MainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
         createVolumeChart();
         addVolumeChartData();
-
-
     }
 
     private void createVolumeChart(){
