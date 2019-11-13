@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "200727660686-hrq8do84uu6fehdt5f28cl8dnf875qe0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workoutmanager",
+            "certificate_hash": "ada7168a63b2440b255eb46678a4a2638095e7a6"
+          }
+        },
+        {
           "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
           "client_type": 3
         }
