@@ -27,14 +27,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class WorkoutActivity extends AppCompatActivity {
     public LinkedHashMap<String, Workout> workoutHashMap = new LinkedHashMap<>();
+    public int TotalWorkouts = 4;
+    public String currentWorkout;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -60,25 +64,33 @@ public class WorkoutActivity extends AppCompatActivity {
         workoutHashMap.put(zondag.getNaam(), zondag);
 
 
-        System.out.println("_____________________________________________________________________________________");
-        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document();
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("thicc", "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d("thicc", "No such document");
-                    }
-                } else {
-                    Log.d("tag", "get failed with ", task.getException());
-                }
-            }
-        });
-//        database.getReference("Users/Pxq8xzmSBjhNH7wGFl20".setValue());
+//        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts").collection("Dinsdag").document("Info");
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d("thicc", "DocumentSnapshot data: " + document.getData());
+//                    } else {
+//                        Log.d("thicc", "No such document");
+//                    }
+//                } else {
+//                    Log.d("tag", "get failed with ", task.getException());
+//                }
+//            }
+//        });
         final ArrayList<String> workoutArrayList = new ArrayList<>();
+
+//        int i = 0;
+//        Log.d("thicc", "workout start?" + getTotalWorkouts());
+//        while(i<TotalWorkouts){
+//            Log.d("thicc", "workout start:");
+//            Log.d("thicc", "workout:" + getWorkout(i));
+//            getTotalWorkouts();
+//            i++;
+//        }
+
         for(String key :workoutHashMap.keySet()){
             System.out.println(key);
             workoutArrayList.add(key);
@@ -102,12 +114,88 @@ public class WorkoutActivity extends AppCompatActivity {
         });
 
         list.setAdapter(itemsAdapter);
-        }
-    public LinkedHashMap<String, Workout> getWorkoutHashMap() {
-        return workoutHashMap;
+
+        Log.d("thicc", "getWorkout(\"Maandag\") " +getWorkout("Maandag"));
+//        Log.d("thicc", "getWorkout(1)" +getWorkout(1));
+//        Log.d("thicc", "getWorkout(getWorkout(1))" +getWorkout(getWorkout(1)));
+        addWorkout(new Workout("vrijdag"));
+        addWorkout(new Workout("woensdag"));
+        addWorkout(new Workout("donderdag"));
+        addWorkout(new Workout("maandag"));
+
+
     }
 
-    public void setWorkoutHashMap(LinkedHashMap<String, Workout> workoutHashMap) {
-        this.workoutHashMap = workoutHashMap;
+    public int getTotalWorkouts(){
+        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        TotalWorkouts = Integer.parseInt(document.getData().get("TotalWorkouts").toString());
+                    } else {
+                        Log.d("nothicc", "No such document");
+                    }
+                } else {
+                    Log.d("nothicc", "get failed with ", task.getException());
+                }
+            }
+        });
+        return TotalWorkouts;
     }
+
+    public String getWorkout(int WorkoutId){
+        final String WorkoutID = String.valueOf(WorkoutId);
+        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currentWorkout = document.getData().get(WorkoutID).toString();
+                    } else {
+                        Log.d("nothicc", "No such document");
+                    }
+                } else {
+                    Log.d("nothicc", "get failed with ", task.getException());
+                }
+            }
+        });
+        return currentWorkout;
+    }
+
+    public String getWorkout(String WorkoutName){
+        final String Name = String.valueOf(WorkoutName);
+        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts").collection(Name).document("Info");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("thicc", "Yes such document " + Name +" "+document.getData().get("Bench").toString());
+                        currentWorkout = document.getData().get("Bench").toString();
+                    } else {
+                        Log.d("nothicc", "No such document" + Name);
+                    }
+                } else {
+                    Log.d("nothicc", "get failed with ", task.getException());
+                }
+            }
+        });
+        return currentWorkout;
+    }
+
+    public void addWorkout(Workout workout){
+        Gson g = new Gson();
+        String jasonStr = g.toJson(workout);
+        DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
+        HashMap input = new HashMap<String, Object>();
+        input.put(workout.getNaam(), jasonStr);
+        docRef.set(workout);
+     }
+
 }

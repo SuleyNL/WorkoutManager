@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "200727660686",
+    "firebase_url": "https://workout-manager-ab52a.firebaseio.com",
+    "project_id": "workout-manager-ab52a",
+    "storage_bucket": "workout-manager-ab52a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200727660686:android:9c0a0bcc4cee82e45fe1df",
+        "android_client_info": {
+          "package_name": "com.example.workoutmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200727660686-hrq8do84uu6fehdt5f28cl8dnf875qe0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workoutmanager",
+            "certificate_hash": "ada7168a63b2440b255eb46678a4a2638095e7a6"
+          }
+        },
+        {
+          "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZV-Dvh6xrkiDYrrmxQIhfYNrmzwACmsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200727660686:android:f24f76ed85989e3d5fe1df",
+        "android_client_info": {
+          "package_name": "com.github.mikephil.charting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZV-Dvh6xrkiDYrrmxQIhfYNrmzwACmsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200727660686:android:936710a4fbf9445f5fe1df",
+        "android_client_info": {
+          "package_name": "com.xxmassdeveloper.mpchartexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZV-Dvh6xrkiDYrrmxQIhfYNrmzwACmsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200727660686-mm1jl0fk5hjctj84ppputnsnitqr4rkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
