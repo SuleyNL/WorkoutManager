@@ -41,7 +41,7 @@ public class WorkoutActivity extends AppCompatActivity {
     public LinkedHashMap<String, Workout> workoutHashMap = new LinkedHashMap<>();
     public int TotalWorkouts = 4;
     public String currentWorkout;
-    public final HashMap<String, Object> databaseHashMap = new HashMap<>();
+    public HashMap<String, Object> databaseHashMap = new HashMap<>();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -95,11 +95,10 @@ public class WorkoutActivity extends AppCompatActivity {
 //            i++;
 //        }
 
-        for(String key :workoutHashMap.keySet()){
+        for (String key : workoutHashMap.keySet()) {
             System.out.println(key);
             workoutArrayList.add(key);
         }
-
 
 
         // INLADEN ALLE WORKOUTS
@@ -118,8 +117,10 @@ public class WorkoutActivity extends AppCompatActivity {
         });
 
         list.setAdapter(itemsAdapter);
-
+        Log.d("thicc", "TE]ESTESTSETSETESTSET");
         getAllWorkouts();
+        Log.d("thicc", databaseHashMap.toString());
+        Log.d("thicc", "TESTESTESTESTSETESTESTESTSETSETESTSET");
 
 //        Workout water = new Workout("water");
 //        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
@@ -130,7 +131,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     }
 
-    public int getTotalWorkouts(){
+    public int getTotalWorkouts() {
         DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -150,7 +151,7 @@ public class WorkoutActivity extends AppCompatActivity {
         return TotalWorkouts;
     }
 
-    public String getWorkout(int WorkoutId){
+    public String getWorkout(int WorkoutId) {
         final String WorkoutID = String.valueOf(WorkoutId);
         DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -171,7 +172,7 @@ public class WorkoutActivity extends AppCompatActivity {
         return currentWorkout;
     }
 
-    public String getWorkout(String WorkoutName){
+    public String getWorkout(String WorkoutName) {
         final String Name = String.valueOf(WorkoutName);
         DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts").collection(Name).document("Info");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -180,7 +181,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("thicc", "Yes such document " + Name +" "+document.getData().get("Bench").toString());
+                        Log.d("thicc", "Yes such document " + Name + " " + document.getData().get("Bench").toString());
                         currentWorkout = document.getData().get("Bench").toString();
                     } else {
                         Log.d("nothicc", "error " + Name);
@@ -193,7 +194,7 @@ public class WorkoutActivity extends AppCompatActivity {
         return currentWorkout;
     }
 
-    public HashMap<String, Object> getAllWorkouts(){
+    public HashMap<String, Object> getAllWorkouts() {
         final DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -202,8 +203,9 @@ public class WorkoutActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String, Object> map = document.getData();
+                        HashMap<String, Object> tempMap = new HashMap<>();
                         for (Map.Entry<String, Object> entry : map.entrySet()) {
-                            Log.d("thicc", "element : " + entry.getKey() + "/" + entry.getValue());
+                            //Log.d("thicc", "element : " + entry.getKey() + "/" + entry.getValue());
                             //Log.d("thicc", "document.getdata() : " + document.getData().toString());
 
                             Gson gson = new Gson();
@@ -212,11 +214,12 @@ public class WorkoutActivity extends AppCompatActivity {
                             Gson g = new Gson();
                             String jasonStr = g.toJson(workout1);
 
-                            databaseHashMap.put(workout1.getNaam(), jasonStr);
-                            Log.d("thicc", "hashmap : " + databaseHashMap);
+                            tempMap.put(workout1.getNaam(), jasonStr);
+                            //Log.d("thicc", "hashmap : " + tempMap);
 
                             //System.out.println(entry.getKey() + "/" + entry.getValue());
                         }
+                        setDatabaseHashMap(tempMap);
 
                     } else {
                         Log.d("nothicc", "No such document");
@@ -226,10 +229,13 @@ public class WorkoutActivity extends AppCompatActivity {
                 }
             }
         });
-        Log.d("thicc", "de databaseHashMap ervoor is : " + databaseHashMap);
+        //Log.d("thicc", "de databaseHashMap ervoor is : " + databaseHashMap);
 
-        return databaseHashMap;
+        return null;
     }
+
+
+
 
     public void addWorkout(Workout workout) {
 
@@ -252,4 +258,9 @@ public class WorkoutActivity extends AppCompatActivity {
 
      }
 
+
+    public void setDatabaseHashMap(HashMap<String, Object> databaseHashMap) {
+        this.databaseHashMap = databaseHashMap;
+        Log.d("thicc", databaseHashMap.toString());
+    }
 }

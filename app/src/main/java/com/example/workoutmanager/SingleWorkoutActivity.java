@@ -12,6 +12,9 @@ import com.example.workoutmanager.models.Workout;
 
 import java.util.LinkedHashMap;
 
+import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class SingleWorkoutActivity extends AppCompatActivity {
 
     @Override
