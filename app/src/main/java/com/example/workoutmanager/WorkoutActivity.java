@@ -41,6 +41,8 @@ public class WorkoutActivity extends AppCompatActivity {
     public LinkedHashMap<String, Workout> workoutHashMap = new LinkedHashMap<>();
     public int TotalWorkouts = 4;
     public String currentWorkout;
+    public final HashMap<String, Object> databaseHashMap = new HashMap<>();
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -117,12 +119,14 @@ public class WorkoutActivity extends AppCompatActivity {
 
         list.setAdapter(itemsAdapter);
 
-        Workout water = new Workout("water");
-        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
-        ArrayList<Exercise> q = new ArrayList<Exercise>();
-        q.add(hangboardSmoll);
-        water.setExercises(q);
-        addWorkout(water);
+        getAllWorkouts();
+
+//        Workout water = new Workout("water");
+//        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
+//        ArrayList<Exercise> q = new ArrayList<Exercise>();
+//        q.add(hangboardSmoll);
+//        water.setExercises(q);
+//        addWorkout(water);
 
     }
 
@@ -190,7 +194,6 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     public HashMap<String, Object> getAllWorkouts(){
-        final HashMap<String, Object> databaseHashMap = new HashMap<>();
         final DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -198,24 +201,23 @@ public class WorkoutActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Iterator it = document.getData().values().iterator();
-                        try {
-                            while (it.hasNext()) {
-                                Log.d("thicc", "element : " + it.next().toString());
-                                Log.d("thicc", "document.getdata() : " + document.getData());
+                        Map<String, Object> map = document.getData();
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            Log.d("thicc", "element : " + entry.getKey() + "/" + entry.getValue());
+                            //Log.d("thicc", "document.getdata() : " + document.getData().toString());
 
-                                Gson gson = new Gson();
-                                Workout workout1 = gson.fromJson(it.next().toString(), Workout.class);
+                            Gson gson = new Gson();
+                            Workout workout1 = gson.fromJson(entry.getValue().toString(), Workout.class);
 
-                                Gson g = new Gson();
-                                String jasonStr = g.toJson(workout1);
+                            Gson g = new Gson();
+                            String jasonStr = g.toJson(workout1);
 
-                                databaseHashMap.put(workout1.getNaam(), jasonStr);
-                            }
+                            databaseHashMap.put(workout1.getNaam(), jasonStr);
+                            Log.d("thicc", "hashmap : " + databaseHashMap);
+
+                            //System.out.println(entry.getKey() + "/" + entry.getValue());
                         }
-                        catch (NoSuchElementException e){
-                            e.printStackTrace();
-                        }
+
                     } else {
                         Log.d("nothicc", "No such document");
                     }
@@ -230,9 +232,9 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     public void addWorkout(Workout workout) {
+
         Gson g = new Gson();
         String jasonStr = g.toJson(workout);
-        HashMap<String, Object> databaseHashMap = getAllWorkouts();
         DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
         databaseHashMap.put(workout.getNaam(), jasonStr);
         docRef.set(databaseHashMap);
