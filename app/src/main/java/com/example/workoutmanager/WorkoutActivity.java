@@ -122,13 +122,6 @@ public class WorkoutActivity extends AppCompatActivity {
         Log.d("thicc", databaseHashMap.toString());
         Log.d("thicc", "TESTESTESTESTSETESTESTESTSETSETESTSET");
 
-//        Workout water = new Workout("water");
-//        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
-//        ArrayList<Exercise> q = new ArrayList<Exercise>();
-//        q.add(hangboardSmoll);
-//        water.setExercises(q);
-//        addWorkout(water);
-
     }
 
     public int getTotalWorkouts() {
@@ -262,5 +255,11 @@ public class WorkoutActivity extends AppCompatActivity {
     public void setDatabaseHashMap(HashMap<String, Object> databaseHashMap) {
         this.databaseHashMap = databaseHashMap;
         Log.d("thicc", databaseHashMap.toString());
+        Workout water = new Workout("GEKKESULEY");
+        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
+        ArrayList<Exercise> q = new ArrayList<Exercise>();
+        q.add(hangboardSmoll);
+        water.setExercises(q);
+        addWorkout(water);
     }
 }
