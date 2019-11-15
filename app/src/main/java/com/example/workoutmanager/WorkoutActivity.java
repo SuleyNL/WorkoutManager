@@ -32,8 +32,10 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class WorkoutActivity extends AppCompatActivity {
     public LinkedHashMap<String, Workout> workoutHashMap = new LinkedHashMap<>();
@@ -115,14 +117,12 @@ public class WorkoutActivity extends AppCompatActivity {
 
         list.setAdapter(itemsAdapter);
 
-        Log.d("thicc", "getWorkout(\"Maandag\") " +getWorkout("Maandag"));
-//        Log.d("thicc", "getWorkout(1)" +getWorkout(1));
-//        Log.d("thicc", "getWorkout(getWorkout(1))" +getWorkout(getWorkout(1)));
-        addWorkout(new Workout("vrijdag"));
-        addWorkout(new Workout("woensdag"));
-        addWorkout(new Workout("donderdag"));
-        addWorkout(new Workout("maandag"));
-
+        Workout water = new Workout("water");
+        Exercise hangboardSmoll = new Exercise("moonboard", 3, 5,10 );
+        ArrayList<Exercise> q = new ArrayList<Exercise>();
+        q.add(hangboardSmoll);
+        water.setExercises(q);
+        addWorkout(water);
 
     }
 
@@ -179,7 +179,7 @@ public class WorkoutActivity extends AppCompatActivity {
                         Log.d("thicc", "Yes such document " + Name +" "+document.getData().get("Bench").toString());
                         currentWorkout = document.getData().get("Bench").toString();
                     } else {
-                        Log.d("nothicc", "No such document" + Name);
+                        Log.d("nothicc", "error " + Name);
                     }
                 } else {
                     Log.d("nothicc", "get failed with ", task.getException());
@@ -189,13 +189,65 @@ public class WorkoutActivity extends AppCompatActivity {
         return currentWorkout;
     }
 
-    public void addWorkout(Workout workout){
+    public HashMap<String, Object> getAllWorkouts(){
+        final HashMap<String, Object> databaseHashMap = new HashMap<>();
+        final DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Iterator it = document.getData().values().iterator();
+                        try {
+                            while (it.hasNext()) {
+                                Log.d("thicc", "element : " + it.next().toString());
+                                Log.d("thicc", "document.getdata() : " + document.getData());
+
+                                Gson gson = new Gson();
+                                Workout workout1 = gson.fromJson(it.next().toString(), Workout.class);
+
+                                Gson g = new Gson();
+                                String jasonStr = g.toJson(workout1);
+
+                                databaseHashMap.put(workout1.getNaam(), jasonStr);
+                            }
+                        }
+                        catch (NoSuchElementException e){
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d("nothicc", "No such document");
+                    }
+                } else {
+                    Log.d("nothicc", "get failed with ", task.getException());
+                }
+            }
+        });
+        Log.d("thicc", "de databaseHashMap ervoor is : " + databaseHashMap);
+
+        return databaseHashMap;
+    }
+
+    public void addWorkout(Workout workout) {
         Gson g = new Gson();
         String jasonStr = g.toJson(workout);
+        HashMap<String, Object> databaseHashMap = getAllWorkouts();
         DocumentReference docRef = db.collection("Users").document("Pxq8xzmSBjhNH7wGFl20").collection("Workouts").document("Workouts");
-        HashMap input = new HashMap<String, Object>();
-        input.put(workout.getNaam(), jasonStr);
-        docRef.set(workout);
+        databaseHashMap.put(workout.getNaam(), jasonStr);
+        docRef.set(databaseHashMap);
+        Log.d("thicc", "de databaseHashMap erna is : " + databaseHashMap);
+
+
+//        HashMap<String, Exercise> workoutHashMap = new HashMap<>();
+//        if (!workout.getExercises().isEmpty()) {
+//            for (Exercise item : workout.getExercises()) {
+//                workoutHashMap.put(item.getName(), item);
+//            }
+//        }
+//        docRef.set(workoutHashMap);
+
+
      }
 
 }
